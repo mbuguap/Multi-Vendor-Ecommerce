@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_vendor/controllers/auth_controller.dart';
 import 'package:multi_vendor/controllers/snack_bar_controller.dart';
-import 'package:multi_vendor/views/auth/customer_login_screen.dart';
+import 'package:multi_vendor/views/auth/landing_customer_screen.dart';
 
-class LandingCustomerScreen extends StatefulWidget {
+class CustomerLoginScreen extends StatefulWidget {
   @override
-  State<LandingCustomerScreen> createState() => _LandingCustomerScreenState();
+  State<CustomerLoginScreen> createState() => _CustomerLoginScreenState();
 }
 
-class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
+class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
   final AuthController _authController = AuthController();
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -18,39 +18,6 @@ class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
   bool passwordVisable = true;
 
   bool isLoading = false;
-  Uint8List? _image;
-
-  pickImageFromGallery() async {
-    Uint8List im = await _authController.pickImage(ImageSource.gallery);
-    setState(() {
-      _image = im;
-    });
-  }
-
-  pickImageFromCamera() async {
-    Uint8List im = await _authController.pickImage(ImageSource.camera);
-    setState(() {
-      _image = im;
-    });
-  }
-
-  signUp() async {
-    setState(() {
-      isLoading = true;
-    });
-    String res = await _authController.signUpUsers(_fullNameController.text,
-        _emailController.text, _passwordController.text, _image!);
-
-    setState(() {
-      isLoading = false;
-    });
-
-    if (res != 'success') {
-      return snackBar(res, context);
-    } else {
-      print('You have navigated to the Home Screen');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +33,7 @@ class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Create Customer's Account",
+                      "Sign into Customer's Account",
                       style: TextStyle(
                           fontSize: 25,
                           fontFamily: "Roboto-Regular",
@@ -83,72 +50,13 @@ class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
                   ],
                 ),
                 Row(
-                  children: [
-                    _image != null
-                        ? CircleAvatar(
-                            radius: 60,
-                            backgroundColor: Colors.cyan,
-                            backgroundImage: MemoryImage(_image!),
-                          )
-                        : CircleAvatar(
-                            radius: 60,
-                            backgroundColor: Colors.cyan,
-                          ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Colors.cyan,
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(15),
-                                  topRight: Radius.circular(15))),
-                          child: IconButton(
-                              onPressed: () {
-                                pickImageFromCamera();
-                              },
-                              icon: Icon(
-                                Icons.camera_alt,
-                                color: Colors.white,
-                              )),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Colors.cyan,
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(15),
-                                  bottomRight: Radius.circular(15))),
-                          child: IconButton(
-                              onPressed: () {
-                                pickImageFromGallery();
-                              },
-                              icon: Icon(
-                                Icons.photo,
-                                color: Colors.white,
-                              )),
-                        )
-                      ],
-                    )
-                  ],
+                  children: [],
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 Column(
                   children: [
-                    TextFormField(
-                      controller: _fullNameController,
-                      decoration: InputDecoration(
-                          labelText: "Full Name",
-                          hintText: "Enter your full name",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(25))),
-                    ),
                     SizedBox(
                       height: 10,
                     ),
@@ -185,9 +93,7 @@ class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
                       height: 15,
                     ),
                     GestureDetector(
-                      onTap: () {
-                        signUp();
-                      },
+                      onTap: () {},
                       child: Container(
                         width: MediaQuery.of(context).size.width - 40,
                         height: 50,
@@ -200,7 +106,7 @@ class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
                                   color: Colors.white,
                                 )
                               : Text(
-                                  'Sign Up',
+                                  'Login',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 20,
@@ -213,7 +119,7 @@ class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Already have an Account?",
+                          "Need an Account?",
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500),
                         ),
@@ -221,10 +127,10 @@ class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (BuildContext context) {
-                                return CustomerLoginScreen();
+                                return LandingCustomerScreen();
                               }));
                             },
-                            child: Text('Login'))
+                            child: Text('Sign up'))
                       ],
                     ),
                     Text(
