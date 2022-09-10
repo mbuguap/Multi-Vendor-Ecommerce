@@ -38,7 +38,7 @@ class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
       isLoading = true;
     });
     String res = await _authController.signUpUsers(_fullNameController.text,
-        _emailController.text, _passwordController.text);
+        _emailController.text, _passwordController.text, _image!);
 
     setState(() {
       isLoading = false;
