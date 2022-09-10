@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multi_vendor/views/home_screen.dart';
+import 'package:multi_vendor/views/profile_screen.dart';
 
 class CustomerHomeScreen extends StatefulWidget {
   @override
@@ -20,9 +21,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
     Center(
       child: Text('Cart Screen'),
     ),
-    Center(
-      child: Text('Profile Screen'),
-    ),
+    ProfileScreen(),
   ];
 
   @override
