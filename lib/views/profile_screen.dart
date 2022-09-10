@@ -27,8 +27,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 background: Container(
                   decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [Colors.cyan, Colors.black26])),
+                    gradient: LinearGradient(
+                      colors: [Colors.cyan, Colors.black26],
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 50,
+                          backgroundImage: AssetImage('assets/images/guest.jpg'),
+                        ),
+                        SizedBox(
+                          width: 25,
+                        ),
+                        Text(
+                          'GUEST',
+                          style: TextStyle(fontSize: 25, color: Colors.white),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
               );
             }),
