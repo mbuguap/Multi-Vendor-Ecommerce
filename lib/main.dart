@@ -4,9 +4,7 @@ import 'package:multi_vendor/views/auth/landing_customer_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp().then((value) {
-    print('Completed');
-  });
+  await Firebase.initializeApp().then((value) {});
   runApp(const MyApp());
 }
 
