@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multi_vendor/views/cart_screen.dart';
 import 'package:multi_vendor/views/home_screen.dart';
 import 'package:multi_vendor/views/profile_screen.dart';
 
@@ -18,9 +19,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
     Center(
       child: Text('Shop Screen'),
     ),
-    Center(
-      child: Text('Cart Screen'),
-    ),
+    CartScreen(),
     ProfileScreen(),
   ];
 
