@@ -48,7 +48,10 @@ class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
     if (res != 'success') {
       return snackBar(res, context);
     } else {
-      print('You have navigated to the Home Screen');
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (BuildContext context) {
+        return CustomerLoginScreen();
+      }));
     }
   }
 
@@ -70,7 +73,6 @@ class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
                       style: TextStyle(
                           fontSize: 25,
                           fontFamily: "Roboto-Regular",
-                          fontStyle: FontStyle.italic,
                           fontWeight: FontWeight.bold),
                     ),
                     IconButton(

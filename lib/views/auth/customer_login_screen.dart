@@ -1,9 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:multi_vendor/controllers/auth_controller.dart';
 import 'package:multi_vendor/controllers/snack_bar_controller.dart';
 import 'package:multi_vendor/views/auth/landing_customer_screen.dart';
+import 'package:multi_vendor/views/customer_home_screen.dart';
 
 class CustomerLoginScreen extends StatefulWidget {
   @override
@@ -12,12 +11,33 @@ class CustomerLoginScreen extends StatefulWidget {
 
 class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
   final AuthController _authController = AuthController();
-  final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool passwordVisable = true;
 
   bool isLoading = false;
+
+  loginUsers() async {
+    setState(() {
+      isLoading = true;
+    });
+    String res = await _authController.loginUsers(
+      _emailController.text,
+      _passwordController.text,
+    );
+    setState(() {
+      isLoading = false;
+    });
+
+    if (res != 'success') {
+      return snackBar(res, context);
+    } else {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (BuildContext context) {
+        return CustomerHomeScreen();
+      }));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +53,10 @@ class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Sign into Customer's Account",
+                      "Customer Login",
                       style: TextStyle(
                           fontSize: 25,
                           fontFamily: "Roboto-Regular",
-                          fontStyle: FontStyle.italic,
                           fontWeight: FontWeight.bold),
                     ),
                     IconButton(
@@ -48,9 +67,6 @@ class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
                           color: Colors.cyan,
                         ))
                   ],
-                ),
-                Row(
-                  children: [],
                 ),
                 SizedBox(
                   height: 10,
@@ -93,7 +109,9 @@ class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
                       height: 15,
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        loginUsers();
+                      },
                       child: Container(
                         width: MediaQuery.of(context).size.width - 40,
                         height: 50,
