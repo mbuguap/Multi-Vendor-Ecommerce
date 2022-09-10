@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
-class LandingCustomerScreen extends StatelessWidget {
-  const LandingCustomerScreen({super.key});
+class LandingCustomerScreen extends StatefulWidget {
+  @override
+  State<LandingCustomerScreen> createState() => _LandingCustomerScreenState();
+}
+
+class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
+  bool passwordVisable = true;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +23,11 @@ class LandingCustomerScreen extends StatelessWidget {
                   children: [
                     Text(
                       "Create Customer's Account",
-                      style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontFamily: "Roboto-Regular",
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold),
                     ),
                     IconButton(
                         onPressed: () {},
@@ -99,7 +108,17 @@ class LandingCustomerScreen extends StatelessWidget {
                       height: 10,
                     ),
                     TextFormField(
+                      obscureText: passwordVisable,
                       decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  passwordVisable = !passwordVisable;
+                                });
+                              },
+                              icon: passwordVisable
+                                  ? Icon(Icons.visibility)
+                                  : Icon(Icons.visibility_off)),
                           labelText: "Password",
                           hintText: "Enter your password",
                           border: OutlineInputBorder(
@@ -137,7 +156,8 @@ class LandingCustomerScreen extends StatelessWidget {
                     ),
                     Text(
                       'Or',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

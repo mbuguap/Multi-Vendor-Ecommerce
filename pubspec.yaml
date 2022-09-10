@@ -66,10 +66,10 @@ flutter:
 
 
   fonts:
-    - family: Merriweather-Bold
+    - family: Roboto-Bold
       fonts:
-        - asset: assets/fonts/Merriweather-Bold.ttf
-    - family: Merriweather-Regular
+        - asset: assets/fonts/Roboto-Bold.ttf
+    - family: Roboto-Regular
       fonts:
-        - asset: assets/fonts/Merriweather-Regular.ttf
+        - asset: assets/fonts/Roboto-Regular.ttf
 
