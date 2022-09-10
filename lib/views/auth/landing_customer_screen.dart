@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:multi_vendor/controllers/auth_controller.dart';
 import 'package:multi_vendor/controllers/snack_bar_controller.dart';
 
@@ -15,6 +17,21 @@ class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
   bool passwordVisable = true;
 
   bool isLoading = false;
+  Uint8List? _image;
+
+  pickImageFromGallery() async {
+    Uint8List im = await _authController.pickImage(ImageSource.gallery);
+    setState(() {
+      _image = im;
+    });
+  }
+
+  pickImageFromCamera() async {
+    Uint8List im = await _authController.pickImage(ImageSource.camera);
+    setState(() {
+      _image = im;
+    });
+  }
 
   signUp() async {
     setState(() {
@@ -66,10 +83,16 @@ class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
                 ),
                 Row(
                   children: [
-                    CircleAvatar(
-                      radius: 60,
-                      backgroundColor: Colors.cyan,
-                    ),
+                    _image != null
+                        ? CircleAvatar(
+                            radius: 60,
+                            backgroundColor: Colors.cyan,
+                            backgroundImage: MemoryImage(_image!),
+                          )
+                        : CircleAvatar(
+                            radius: 60,
+                            backgroundColor: Colors.cyan,
+                          ),
                     SizedBox(
                       width: 10,
                     ),
@@ -82,7 +105,9 @@ class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
                                   topLeft: Radius.circular(15),
                                   topRight: Radius.circular(15))),
                           child: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                pickImageFromCamera();
+                              },
                               icon: Icon(
                                 Icons.camera_alt,
                                 color: Colors.white,
@@ -98,7 +123,9 @@ class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
                                   bottomLeft: Radius.circular(15),
                                   bottomRight: Radius.circular(15))),
                           child: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                pickImageFromGallery();
+                              },
                               icon: Icon(
                                 Icons.photo,
                                 color: Colors.white,
