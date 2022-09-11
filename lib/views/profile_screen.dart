@@ -36,6 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             body: CustomScrollView(
               slivers: [
                 SliverAppBar(
+                  automaticallyImplyLeading: false,
                   expandedHeight: 140,
                   flexibleSpace: LayoutBuilder(builder: (context, constraints) {
                     return FlexibleSpaceBar(
