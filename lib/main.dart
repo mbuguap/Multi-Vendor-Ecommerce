@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: "Roboto-Bold",
       ),
-      home: CustomerHomeScreen(),
+      home: LandingCustomerScreen(),
     );
   }
 }
