@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:multi_vendor/views/auth/customer_login_screen.dart';
 import 'package:multi_vendor/views/auth/landing_customer_screen.dart';
+import 'package:multi_vendor/views/auth/landing_seller_screen.dart';
+import 'package:multi_vendor/views/auth/seller_login_screen.dart';
 import 'package:multi_vendor/views/customer_home_screen.dart';
 
 void main() async {
@@ -26,10 +28,12 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: "Roboto-Bold",
       ),
-      initialRoute: CustomerHomeScreen.routeName,
+      initialRoute: LandingCustomerScreen.routeName,
       routes: {
         CustomerHomeScreen.routeName: (context) => CustomerHomeScreen(),
         LandingCustomerScreen.routeName: (context) => LandingCustomerScreen(),
+        LandingSellerScreen.routeName: (context) => LandingSellerScreen(),
+        SellerLoginScreen.routeName: (context) => SellerLoginScreen(),
       },
     );
   }

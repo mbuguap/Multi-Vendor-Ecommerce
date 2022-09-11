@@ -1,48 +1,31 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:multi_vendor/controllers/auth_controller.dart';
 import 'package:multi_vendor/controllers/snack_bar_controller.dart';
-import 'package:multi_vendor/views/auth/customer_login_screen.dart';
-import 'package:multi_vendor/views/auth/landing_seller_screen.dart';
+import 'package:multi_vendor/views/auth/landing_customer_screen.dart';
+import 'package:multi_vendor/views/customer_home_screen.dart';
 
-class LandingCustomerScreen extends StatefulWidget {
-  static const String routeName = 'LandingCustomerScreen';
+class SellerLoginScreen extends StatefulWidget {
+  static const String routeName = 'SellerLoginScreen';
   @override
-  State<LandingCustomerScreen> createState() => _LandingCustomerScreenState();
+  State<SellerLoginScreen> createState() => _SellerLoginScreenState();
 }
 
-class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
+class _SellerLoginScreenState extends State<SellerLoginScreen> {
   final AuthController _authController = AuthController();
-  final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool passwordVisable = true;
 
   bool isLoading = false;
-  Uint8List? _image;
 
-  pickImageFromGallery() async {
-    Uint8List im = await _authController.pickImage(ImageSource.gallery);
-    setState(() {
-      _image = im;
-    });
-  }
-
-  pickImageFromCamera() async {
-    Uint8List im = await _authController.pickImage(ImageSource.camera);
-    setState(() {
-      _image = im;
-    });
-  }
-
-  signUp() async {
+  loginUsers() async {
     setState(() {
       isLoading = true;
     });
-    String res = await _authController.signUpUsers(_fullNameController.text,
-        _emailController.text, _passwordController.text, _image!);
-
+    String res = await _authController.loginUsers(
+      _emailController.text,
+      _passwordController.text,
+    );
     setState(() {
       isLoading = false;
     });
@@ -50,10 +33,12 @@ class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
     if (res != 'success') {
       return snackBar(res, context);
     } else {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (BuildContext context) {
-        return CustomerLoginScreen();
-      }));
+      // Navigator.of(context)
+      //     .push(MaterialPageRoute(builder: (BuildContext context) {
+      //   return CustomerHomeScreen();
+      // }));
+      return Navigator.of(context).pushNamedAndRemoveUntil(
+          CustomerHomeScreen.routeName, (route) => false);
     }
   }
 
@@ -71,7 +56,7 @@ class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Create Customer Account",
+                      "Customer Login",
                       style: TextStyle(
                           fontSize: 25,
                           fontFamily: "Roboto-Regular",
@@ -86,73 +71,11 @@ class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
                         ))
                   ],
                 ),
-                Row(
-                  children: [
-                    _image != null
-                        ? CircleAvatar(
-                            radius: 60,
-                            backgroundColor: Colors.cyan,
-                            backgroundImage: MemoryImage(_image!),
-                          )
-                        : CircleAvatar(
-                            radius: 60,
-                            backgroundColor: Colors.cyan,
-                          ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Colors.cyan,
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(15),
-                                  topRight: Radius.circular(15))),
-                          child: IconButton(
-                              onPressed: () {
-                                pickImageFromCamera();
-                              },
-                              icon: Icon(
-                                Icons.camera_alt,
-                                color: Colors.white,
-                              )),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Colors.cyan,
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(15),
-                                  bottomRight: Radius.circular(15))),
-                          child: IconButton(
-                              onPressed: () {
-                                pickImageFromGallery();
-                              },
-                              icon: Icon(
-                                Icons.photo,
-                                color: Colors.white,
-                              )),
-                        )
-                      ],
-                    )
-                  ],
-                ),
                 SizedBox(
                   height: 10,
                 ),
                 Column(
                   children: [
-                    TextFormField(
-                      controller: _fullNameController,
-                      decoration: InputDecoration(
-                          labelText: "Full Name",
-                          hintText: "Enter your full name",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(25))),
-                    ),
                     SizedBox(
                       height: 10,
                     ),
@@ -190,7 +113,7 @@ class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        signUp();
+                        loginUsers();
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width - 40,
@@ -204,7 +127,7 @@ class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
                                   color: Colors.white,
                                 )
                               : Text(
-                                  'Sign Up',
+                                  'Login',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 20,
@@ -217,7 +140,7 @@ class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Already have an Account?",
+                          "Need an Account?",
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500),
                         ),
@@ -225,10 +148,10 @@ class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (BuildContext context) {
-                                return CustomerLoginScreen();
+                                return LandingCustomerScreen();
                               }));
                             },
-                            child: Text('Login'))
+                            child: Text('Sign up'))
                       ],
                     ),
                     Text(
@@ -240,16 +163,11 @@ class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Create Seller Account?",
+                          "Create a seller's Account?",
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500),
                         ),
-                        TextButton(
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                  context, LandingSellerScreen.routeName);
-                            },
-                            child: Text('Sign up'))
+                        TextButton(onPressed: () {}, child: Text('Sign up'))
                       ],
                     ),
                   ],
