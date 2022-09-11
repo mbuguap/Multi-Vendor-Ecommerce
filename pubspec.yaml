@@ -26,6 +26,7 @@ flutter:
 
   assets:
     - assets/images/guest.jpg
+    - assets/images/men/
 
   fonts:
     - family: Roboto-Bold

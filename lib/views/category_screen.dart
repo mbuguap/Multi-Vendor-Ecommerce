@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multi_vendor/views/categories/men_category_screen.dart';
 
 class CategoryScreen extends StatefulWidget {
   @override
@@ -6,6 +7,7 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
+  final PageController _pageController = PageController();
   List<ItemData> _item = [
     ItemData(categoryName: 'Men'),
     ItemData(categoryName: 'Women'),
@@ -31,12 +33,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   itemBuilder: (BuildContext context, int index) {
                     return InkWell(
                       onTap: () {
-                        for (var element in _item) {
-                          element.isSelected = false;
-                        }
-                        setState(() {
-                          _item[index].isSelected = true;
-                        });
+                        // for (var element in _item) {
+                        //   element.isSelected = false;
+                        // }
+                        // setState(() {
+                        //   _item[index].isSelected = true;
+                        // });
+                        _pageController.jumpToPage(index);
                       },
                       child: Container(
                         color: _item[index].isSelected == true
@@ -58,8 +61,35 @@ class _CategoryScreenState extends State<CategoryScreen> {
               height: MediaQuery.of(context).size.height * 0.8,
               width: MediaQuery.of(context).size.width * 0.8,
               color: Colors.white,
+              child: PageView(
+                controller: _pageController,
+                onPageChanged: (value) {
+                  for (var element in _item) {
+                    element.isSelected = false;
+                  }
+                  setState(() {
+                    _item[value].isSelected = true;
+                  });
+                },
+                scrollDirection: Axis.vertical,
+                children: [
+                  MenCategoryScreen(),
+                  Center(
+                    child: Text('Women'),
+                  ),
+                  Center(
+                    child: Text('Shoes'),
+                  ),
+                  Center(
+                    child: Text('Kids'),
+                  ),
+                  Center(
+                    child: Text('Bag'),
+                  )
+                ],
+              ),
             ),
-          )
+          ),
         ],
       ),
     );
