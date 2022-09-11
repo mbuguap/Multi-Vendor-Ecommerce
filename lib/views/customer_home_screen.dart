@@ -4,6 +4,7 @@ import 'package:multi_vendor/views/home_screen.dart';
 import 'package:multi_vendor/views/profile_screen.dart';
 
 class CustomerHomeScreen extends StatefulWidget {
+  static const String routeName = 'CustomerHomeScreen';
   @override
   State<CustomerHomeScreen> createState() => _CustomerHomeScreenState();
 }

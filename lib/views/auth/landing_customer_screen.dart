@@ -6,6 +6,7 @@ import 'package:multi_vendor/controllers/snack_bar_controller.dart';
 import 'package:multi_vendor/views/auth/customer_login_screen.dart';
 
 class LandingCustomerScreen extends StatefulWidget {
+  static const String routeName = 'LandingCustomerScreen';
   @override
   State<LandingCustomerScreen> createState() => _LandingCustomerScreenState();
 }
