@@ -111,7 +111,7 @@ class _LandingCustomerScreenState extends State<LandingCustomerScreen> {
                                   topRight: Radius.circular(15))),
                           child: IconButton(
                               onPressed: () {
-                                pickImageFromCamera();
+                                pickImageFromCamera(); 
                               },
                               icon: Icon(
                                 Icons.camera_alt,
