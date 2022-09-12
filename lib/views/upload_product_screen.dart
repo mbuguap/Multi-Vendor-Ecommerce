@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:multi_vendor/controllers/snack_bar_controller.dart';
 import 'package:multi_vendor/utils/category_list.dart';
 import 'package:path/path.dart' as path;
+import 'package:uuid/uuid.dart';
 
 class UploadProductScreen extends StatefulWidget {
   @override
@@ -27,6 +28,7 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
   late int quantity;
   late String productName;
   late String productDescription;
+  late String productId;
 
   List<XFile>? imageList = [];
   List<String> imageUrlList = [];
@@ -131,7 +133,10 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
     if (imageUrlList.isNotEmpty) {
       CollectionReference productRef = _firestore.collection('products');
 
-      await productRef.doc().set({
+      productId = Uuid().v4();
+
+      await productRef.doc(productId).set({
+        'productId': productId,
         'mainCategory': mainCategoryValue,
         'subCategory': subCategoryValue,
         'price': price,
@@ -145,6 +150,7 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
         setState(() {
           imageList = [];
           subCategoryList = [];
+          imageUrlList = [];
           mainCategoryValue = 'select main category';
         });
         _formKey.currentState!.reset();

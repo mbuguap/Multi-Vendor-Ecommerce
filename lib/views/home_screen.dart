@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multi_vendor/views/gallery/men_gallery_screen.dart';
 import 'package:multi_vendor/views/inner_screens/search_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -9,6 +10,7 @@ class HomeScreen extends StatelessWidget {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
+        backgroundColor: Colors.blueGrey.shade100.withOpacity(0.5),
         appBar: AppBar(
           // automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
@@ -62,18 +64,24 @@ class HomeScreen extends StatelessWidget {
           elevation: 0,
           bottom: TabBar(
             tabs: [
-              RepeatedTab(title: 'Men',),
-              RepeatedTab(title: 'Women',),
-              RepeatedTab(title: 'Kids',),
-              RepeatedTab(title: 'Shoes',),
+              RepeatedTab(
+                title: 'Men',
+              ),
+              RepeatedTab(
+                title: 'Women',
+              ),
+              RepeatedTab(
+                title: 'Kids',
+              ),
+              RepeatedTab(
+                title: 'Shoes',
+              ),
             ],
           ),
         ),
         body: TabBarView(
           children: [
-            Center(
-              child: Text('Men Category'),
-            ),
+            MenGalleryScreen(),
             Center(
               child: Text('Women Category'),
             ),
