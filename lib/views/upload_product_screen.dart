@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_vendor/controllers/snack_bar_controller.dart';
+import 'package:multi_vendor/utils/category_list.dart';
 
 class UploadProductScreen extends StatefulWidget {
   @override
@@ -11,6 +12,8 @@ class UploadProductScreen extends StatefulWidget {
 class _UploadProductScreenState extends State<UploadProductScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
+  String mainCategoryValue = 'men';
+  String subCategoryValue = 'Shirt';
 
   late double price;
   late int quantity;
@@ -31,19 +34,47 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
   }
 
   Widget displayImage() {
-    return InkWell(
-      onTap: () {
+    if (imageList!.isNotEmpty) {
+      return InkWell(
+        onTap: () {
+          setState(() {
+            imageList = null;
+          });
+        },
+        child: ListView.builder(
+            // scrollDirection: Axis.horizontal,
+            itemCount: imageList!.length,
+            itemBuilder: (context, index) {
+              return Image.file(File(imageList![index].path));
+            }),
+      );
+    } else {
+      return Center(
+        child: Text(
+          'You Have not\n \nPicked any Images',
+          style: TextStyle(
+            fontSize: 17,
+          ),
+        ),
+      );
+    }
+  }
+
+  void uploadProduct() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      if (imageList!.isNotEmpty) {
+        // print(price);
         setState(() {
-          imageList = null;
+          imageList = [];
         });
-      },
-      child: ListView.builder(
-          // scrollDirection: Axis.horizontal,
-          itemCount: imageList!.length,
-          itemBuilder: (context, index) {
-            return Image.file(File(imageList![index].path));
-          }),
-    );
+        _formKey.currentState!.reset();
+      } else {
+        return snackBar('Please Pick Images', context);
+      }
+    } else {
+      return snackBar('Fill all fields', context);
+    }
   }
 
   @override
@@ -73,7 +104,43 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                               ),
                       ),
                     ),
-                    Text('Category here'),
+                    Column(
+                      children: [
+                        Text(
+                          'Select Main Category',
+                        ),
+                        DropdownButton(
+                            value: mainCategoryValue,
+                            items:
+                                mainCategory.map<DropdownMenuItem<String>>((e) {
+                              return DropdownMenuItem(
+                                child: Text(e),
+                                value: e,
+                              );
+                            }).toList(),
+                            onChanged: (String? value) {
+                              setState(() {
+                                mainCategoryValue = value!;
+                              });
+                            }),
+                        Text(
+                          'Select Sub Category',
+                        ),
+                        DropdownButton(
+                            value: subCategoryValue,
+                            items: men.map<DropdownMenuItem<String>>((e) {
+                              return DropdownMenuItem(
+                                child: Text(e),
+                                value: e,
+                              );
+                            }).toList(),
+                            onChanged: (String? value) {
+                              setState(() {
+                                subCategoryValue = value!;
+                              });
+                            }),
+                      ],
+                    ),
                   ],
                 ),
                 SizedBox(
@@ -105,8 +172,8 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                           ),
                         ),
                       ),
-                      onChanged: (value) {
-                        price = double.parse(value);
+                      onSaved: (value) {
+                        price = double.parse(value!);
                       },
                     ),
                   ),
@@ -133,8 +200,8 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                           ),
                         ),
                       ),
-                      onChanged: (value) {
-                        quantity = int.parse(value);
+                      onSaved: (value) {
+                        quantity = int.parse(value!);
                       },
                     ),
                   ),
@@ -162,8 +229,8 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                           ),
                         ),
                       ),
-                      onChanged: (value) {
-                        productName = value;
+                      onSaved: (value) {
+                        productName = value!;
                       },
                     ),
                   ),
@@ -191,8 +258,8 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                           ),
                         ),
                       ),
-                      onChanged: (value) {
-                        productDescription = value;
+                      onSaved: (value) {
+                        productDescription = value!;
                       },
                     ),
                   ),
@@ -216,11 +283,7 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
           ),
           FloatingActionButton(
             onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                print(price);
-              } else {
-                return snackBar('Fill all fields', context);
-              }
+              uploadProduct();
             },
             child: Icon(Icons.upload),
           ),
