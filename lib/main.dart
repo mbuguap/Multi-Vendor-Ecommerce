@@ -6,6 +6,7 @@ import 'package:multi_vendor/views/auth/landing_customer_screen.dart';
 import 'package:multi_vendor/views/auth/landing_seller_screen.dart';
 import 'package:multi_vendor/views/auth/seller_login_screen.dart';
 import 'package:multi_vendor/views/customer_home_screen.dart';
+import 'package:multi_vendor/views/seller_home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,12 +29,13 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: "Roboto-Bold",
       ),
-      initialRoute: LandingCustomerScreen.routeName,
+      initialRoute: SellerHomeScreen.routeName,
       routes: {
         CustomerHomeScreen.routeName: (context) => CustomerHomeScreen(),
         LandingCustomerScreen.routeName: (context) => LandingCustomerScreen(),
         LandingSellerScreen.routeName: (context) => LandingSellerScreen(),
         SellerLoginScreen.routeName: (context) => SellerLoginScreen(),
+        SellerHomeScreen.routeName: (context) => SellerHomeScreen(),
       },
     );
   }
