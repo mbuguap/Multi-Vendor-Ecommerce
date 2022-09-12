@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:multi_vendor/controllers/snack_bar_controller.dart';
 
 class UploadProductScreen extends StatefulWidget {
@@ -8,11 +10,41 @@ class UploadProductScreen extends StatefulWidget {
 
 class _UploadProductScreenState extends State<UploadProductScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final ImagePicker _picker = ImagePicker();
 
   late double price;
   late int quantity;
   late String productName;
   late String productDescription;
+
+  List<XFile>? imageList = [];
+
+  void pickProductImages() async {
+    try {
+      final pickedImages = await _picker.pickMultiImage(
+          maxHeight: 300, maxWidth: 300, imageQuality: 100);
+
+      setState(() {
+        imageList = pickedImages!;
+      });
+    } catch (e) {}
+  }
+
+  Widget displayImage() {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          imageList = null;
+        });
+      },
+      child: ListView.builder(
+          // scrollDirection: Axis.horizontal,
+          itemCount: imageList!.length,
+          itemBuilder: (context, index) {
+            return Image.file(File(imageList![index].path));
+          }),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +63,14 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                       width: MediaQuery.of(context).size.width * 0.5,
                       color: Colors.blueGrey.shade100,
                       child: Center(
-                        child: Text(
-                          'You Have not\n \nPicked any Images',
-                          style: TextStyle(
-                            fontSize: 17,
-                          ),
-                        ),
+                        child: imageList != null
+                            ? displayImage()
+                            : Text(
+                                'You Have not\n \nPicked any Images',
+                                style: TextStyle(
+                                  fontSize: 17,
+                                ),
+                              ),
                       ),
                     ),
                     Text('Category here'),
@@ -174,7 +208,9 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                pickProductImages();
+              },
               child: Icon(Icons.photo_library),
             ),
           ),
