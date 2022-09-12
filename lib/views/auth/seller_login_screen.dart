@@ -11,37 +11,12 @@ class SellerLoginScreen extends StatefulWidget {
 }
 
 class _SellerLoginScreenState extends State<SellerLoginScreen> {
-  final AuthController _authController = AuthController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+
   bool passwordVisable = true;
 
   bool isLoading = false;
 
-  loginUsers() async {
-    setState(() {
-      isLoading = true;
-    });
-    String res = await _authController.loginUsers(
-      _emailController.text,
-      _passwordController.text,
-    );
-    setState(() {
-      isLoading = false;
-    });
-
-    if (res != 'success') {
-      return snackBar(res, context);
-    } else {
-      // Navigator.of(context)
-      //     .push(MaterialPageRoute(builder: (BuildContext context) {
-      //   return CustomerHomeScreen();
-      // }));
-      return Navigator.of(context).pushNamedAndRemoveUntil(
-          CustomerHomeScreen.routeName, (route) => false);
-    }
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +31,7 @@ class _SellerLoginScreenState extends State<SellerLoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Customer Login",
+                      "Seller Login",
                       style: TextStyle(
                           fontSize: 25,
                           fontFamily: "Roboto-Regular",
@@ -80,7 +55,7 @@ class _SellerLoginScreenState extends State<SellerLoginScreen> {
                       height: 10,
                     ),
                     TextFormField(
-                      controller: _emailController,
+                     
                       decoration: InputDecoration(
                           labelText: "Email",
                           hintText: "Enter your email",
@@ -91,7 +66,7 @@ class _SellerLoginScreenState extends State<SellerLoginScreen> {
                       height: 10,
                     ),
                     TextFormField(
-                      controller: _passwordController,
+                     
                       obscureText: passwordVisable,
                       decoration: InputDecoration(
                           suffixIcon: IconButton(
@@ -113,7 +88,7 @@ class _SellerLoginScreenState extends State<SellerLoginScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        loginUsers();
+                       
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width - 40,
