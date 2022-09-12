@@ -95,7 +95,12 @@ class _LandingSellerScreenState extends State<LandingSellerScreen> {
         });
         return snackBar('All fields must be filled', context);
       }
-    } catch (e) {}
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      return snackBar(e.code, context);
+    }
   }
 
   @override

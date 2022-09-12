@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:multi_vendor/controllers/auth_controller.dart';
 import 'package:multi_vendor/controllers/snack_bar_controller.dart';
 import 'package:multi_vendor/views/auth/landing_customer_screen.dart';
+import 'package:multi_vendor/views/auth/landing_seller_screen.dart';
 import 'package:multi_vendor/views/customer_home_screen.dart';
 
 class CustomerLoginScreen extends StatefulWidget {
@@ -139,7 +140,7 @@ class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Need an Account?",
+                          "Create Customer Account?",
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500),
                         ),
@@ -162,11 +163,16 @@ class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Create a seller's Account?",
+                          "Create Seller Account?",
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500),
                         ),
-                        TextButton(onPressed: () {}, child: Text('Sign up'))
+                        TextButton(onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return LandingSellerScreen();
+                                }));
+                        }, child: Text('Sign up'))
                       ],
                     ),
                   ],
