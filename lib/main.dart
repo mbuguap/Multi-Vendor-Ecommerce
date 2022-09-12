@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: "Roboto-Bold",
       ),
-      initialRoute: SellerHomeScreen.routeName,
+      initialRoute: SellerLoginScreen.routeName,
       routes: {
         CustomerHomeScreen.routeName: (context) => CustomerHomeScreen(),
         LandingCustomerScreen.routeName: (context) => LandingCustomerScreen(),
