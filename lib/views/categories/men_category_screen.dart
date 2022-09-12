@@ -23,7 +23,7 @@ class MenCategoryScreen extends StatelessWidget {
             crossAxisCount: 3,
             crossAxisSpacing: 15,
             mainAxisSpacing: 70,
-            children: List.generate(men.length, (index) {
+            children: List.generate(men.length -1, (index) {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
@@ -31,7 +31,7 @@ class MenCategoryScreen extends StatelessWidget {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
                       return SubCategoryScreen(
-                        subCategoryName: men[index],
+                        subCategoryName: men[index + 1],
                         mainCategory: 'Men',
                       );
                     }));
@@ -45,7 +45,7 @@ class MenCategoryScreen extends StatelessWidget {
                         child: Image.asset('assets/images/men/men$index.jpg'),
                       ),
                       Text(
-                        men[index],
+                        men[index + 1],
                       ),
                     ],
                   ),

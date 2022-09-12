@@ -1,4 +1,5 @@
 List<String> mainCategory = [
+  'select main category',
   'men',
   'women',
   'electronics',
@@ -7,10 +8,11 @@ List<String> mainCategory = [
   'home & garden',
   'beauty',
   'kids',
-  'bags'
+  'bags',
 ];
 
 List<String> men = [
+  'subcategory',
   'Shirt',
   'T-Shirt',
   'Jacket',
@@ -18,5 +20,124 @@ List<String> men = [
   'Coat',
   'Jeans',
   'Shorts',
-  'Suit'
+  'Suit',
+  'other'
+];
+
+List<String> women = [
+  'subcategory',
+  'dress',
+  '2pcs sets',
+  't-shirt',
+  'top',
+  'skirt',
+  'jeans',
+  'pants',
+  'coat',
+  'jacket',
+  'other'
+];
+
+List<String> electronics = [
+  'subcategory',
+  'phone',
+  'computer',
+  'laptop',
+  'smart tv',
+  'phone holder',
+  'charger',
+  'usb cables',
+  'head phone',
+  'smart watch',
+  'tablet',
+  'mouse',
+  'keyboard',
+  'gaming',
+  'other'
+];
+
+List<String> shoes = [
+  'subcategory',
+  'men slippers',
+  'men classic',
+  'men casual',
+  'men boots',
+  'men canvas',
+  'men sport',
+  'men sandals',
+  'home slippers',
+  'women slippers',
+  'women boots',
+  'women heels',
+  'women sport',
+  'women sandals',
+  'other'
+];
+
+List<String> homeandgarden = [
+  'subcategory',
+  'living room',
+  'bed room',
+  'dinning room',
+  'kitchen tools',
+  'bath access',
+  'furniture',
+  'decoration',
+  'lighting',
+  'garden',
+  'other'
+];
+
+List<String> beauty = [
+  'subcategory',
+  'body care',
+  'hair care',
+  'men perfume',
+  'women perfume',
+  'make up',
+  'other'
+];
+
+List<String> accessories = [
+  'subcategory',
+  'hat',
+  'men sunglass',
+  'women sunglass',
+  'classic watch',
+  'gloves',
+  'belt waist',
+  'ring',
+  'necklace',
+  'scarf set',
+  'anklet',
+  'other'
+];
+
+List<String> bags = [
+  'subcategory',
+  'wallet',
+  'clutch',
+  'chest bag',
+  'back pack',
+  'business bags',
+  'laptop bags',
+  'women bags',
+  'other'
+];
+
+List<String> kids = [
+  'subcategory',
+  'girls sets',
+  'girls dress',
+  'girls top',
+  'girls pants',
+  'jacket',
+  'sweatshirts',
+  'boys sets',
+  'boys top',
+  'boys pants',
+  'home wear',
+  'boys suits',
+  'baby shoes',
+  'other'
 ];

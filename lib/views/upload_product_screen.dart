@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_vendor/controllers/snack_bar_controller.dart';
@@ -12,8 +13,10 @@ class UploadProductScreen extends StatefulWidget {
 class _UploadProductScreenState extends State<UploadProductScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
-  String mainCategoryValue = 'men';
-  String subCategoryValue = 'Shirt';
+  String mainCategoryValue = 'select main category';
+  String subCategoryValue = 'subcategory';
+
+  List<String> subCategoryList = [];
 
   late double price;
   late int quantity;
@@ -60,6 +63,33 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
     }
   }
 
+  void selectMainCategory(String? value) {
+    if (value == 'men') {
+      subCategoryList = men;
+    } else if (value == 'women') {
+      subCategoryList = women;
+    } else if (value == 'electronics') {
+      subCategoryList = electronics;
+    } else if (value == 'shoes') {
+      subCategoryList = shoes;
+    } else if (value == 'accessories') {
+      subCategoryList = accessories;
+    } else if (value == 'home & garden') {
+      subCategoryList = homeandgarden;
+    } else if (value == 'beauty') {
+      subCategoryList = beauty;
+    } else if (value == 'bags') {
+      subCategoryList = bags;
+    } else if (value == 'kids') {
+      subCategoryList = kids;
+    }
+
+    setState(() {
+      mainCategoryValue = value!;
+      subCategoryValue = 'subcategory';
+    });
+  }
+
   void uploadProduct() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
@@ -104,42 +134,52 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                               ),
                       ),
                     ),
-                    Column(
-                      children: [
-                        Text(
-                          'Select Main Category',
-                        ),
-                        DropdownButton(
-                            value: mainCategoryValue,
-                            items:
-                                mainCategory.map<DropdownMenuItem<String>>((e) {
-                              return DropdownMenuItem(
-                                child: Text(e),
-                                value: e,
-                              );
-                            }).toList(),
-                            onChanged: (String? value) {
-                              setState(() {
-                                mainCategoryValue = value!;
-                              });
-                            }),
-                        Text(
-                          'Select Sub Category',
-                        ),
-                        DropdownButton(
-                            value: subCategoryValue,
-                            items: men.map<DropdownMenuItem<String>>((e) {
-                              return DropdownMenuItem(
-                                child: Text(e),
-                                value: e,
-                              );
-                            }).toList(),
-                            onChanged: (String? value) {
-                              setState(() {
-                                subCategoryValue = value!;
-                              });
-                            }),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Select Main Category',
+                          ),
+                          DropdownButton(
+                              borderRadius: BorderRadius.circular(
+                                50,
+                              ),
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              value: mainCategoryValue,
+                              items: mainCategory
+                                  .map<DropdownMenuItem<String>>((e) {
+                                return DropdownMenuItem(
+                                  child: Text(e),
+                                  value: e,
+                                );
+                              }).toList(),
+                              onChanged: (String? value) {
+                                selectMainCategory(value);
+                              }),
+                          Text(
+                            'Select Sub Category',
+                          ),
+                          DropdownButton(
+                              value: subCategoryValue,
+                              items: subCategoryList
+                                  .map<DropdownMenuItem<String>>((e) {
+                                return DropdownMenuItem(
+                                  child: Text(e),
+                                  value: e,
+                                );
+                              }).toList(),
+                              onChanged: (String? value) {
+                                setState(() {
+                                  subCategoryValue = value!;
+                                });
+                              }),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -275,6 +315,7 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: FloatingActionButton(
+              backgroundColor: Colors.cyan,
               onPressed: () {
                 pickProductImages();
               },
@@ -282,6 +323,7 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
             ),
           ),
           FloatingActionButton(
+            backgroundColor: Colors.cyan,
             onPressed: () {
               uploadProduct();
             },
