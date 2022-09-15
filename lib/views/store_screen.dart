@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_vendor/views/minor_screens/visit_store_screen.dart';
 
 class StoreScreen extends StatelessWidget {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -32,27 +33,37 @@ class StoreScreen extends StatelessWidget {
                     mainAxisSpacing: 25,
                   ),
                   itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        SizedBox(
-                          height: 120,
-                          width: 120,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            child: Image.network(
-                              snapshot.data!.docs[index]['image'],
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return VisitStoreScreen(
+                            sellerUid: snapshot.data!.docs[index]['sellerUid'],
+                          );
+                        }));
+                      },
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 120,
+                            width: 120,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Image.network(
+                                snapshot.data!.docs[index]['image'],
+                              ),
                             ),
                           ),
-                        ),
-                        Text(
-                          snapshot.data!.docs[index]['storeName'],
-                          style: TextStyle(
-                            fontSize: 19,
-                            fontWeight: FontWeight.bold,
-                            // color: Colors.cyan,
+                          Text(
+                            snapshot.data!.docs[index]['storeName'],
+                            style: TextStyle(
+                              fontSize: 19,
+                              fontWeight: FontWeight.bold,
+                              // color: Colors.cyan,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     );
                   });
             }
