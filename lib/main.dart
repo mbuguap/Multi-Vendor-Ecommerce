@@ -7,11 +7,14 @@ import 'package:multi_vendor/views/auth/landing_seller_screen.dart';
 import 'package:multi_vendor/views/auth/seller_login_screen.dart';
 import 'package:multi_vendor/views/customer_home_screen.dart';
 import 'package:multi_vendor/views/seller_home_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp().then((value) {});
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [],
+    child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
