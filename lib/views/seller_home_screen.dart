@@ -4,6 +4,7 @@ import 'package:multi_vendor/views/category_screen.dart';
 import 'package:multi_vendor/views/dashboard_screen.dart';
 import 'package:multi_vendor/views/home_screen.dart';
 import 'package:multi_vendor/views/profile_screen.dart';
+import 'package:multi_vendor/views/store_screen.dart';
 import 'package:multi_vendor/views/upload_product_screen.dart';
 
 class SellerHomeScreen extends StatefulWidget {
@@ -18,10 +19,8 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
   final List<Widget> _pages = [
     HomeScreen(),
     CategoryScreen(),
-    Center(
-      child: Text('Shop Screen'),
-    ),
-    DashboardScreen(),
+    StoreScreen(),
+    DashboardScreen(),         
     UploadProductScreen(),
   ];
 
