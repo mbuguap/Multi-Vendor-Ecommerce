@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
+import 'package:multi_vendor/views/widgets/full_image_screen.dart';
 import 'package:multi_vendor/views/widgets/product_model.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
@@ -17,22 +16,47 @@ class ProductDetailScreen extends StatelessWidget {
     final List<dynamic> images = productList['productImage'];
     final Stream<QuerySnapshot> _productsStream = FirebaseFirestore.instance
         .collection('products')
-        .where('mainCategory', isEqualTo: 'women')
+        .where('mainCategory', isEqualTo: productList['mainCategory'])
+        .where('subCategory', isEqualTo: productList['subCategory'])
         .snapshots();
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.45,
-              child: Swiper(
-                itemCount: images.length,
-                pagination:
-                    SwiperPagination(builder: SwiperPagination.fraction),
-                itemBuilder: (context, index) {
-                  return Image.network(images[index]);
-                },
-              ),
+            Stack(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return FullImageScreen(
+                        imageList: images,
+                      );
+                    }));
+                  },
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.45,
+                    child: Swiper(
+                      itemCount: images.length,
+                      pagination:
+                          SwiperPagination(builder: SwiperPagination.fraction),
+                      itemBuilder: (context, index) {
+                        return Image.network(images[index]);
+                      },
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 30,
+                  left: 10,
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.arrow_back_ios),
+                  ),
+                ),
+              ],
             ),
             Text(
               productList['productName'],
