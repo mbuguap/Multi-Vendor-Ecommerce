@@ -8,6 +8,7 @@ import 'package:multi_vendor/views/dashboard_screens/manage_products_screen.dart
 import 'package:multi_vendor/views/dashboard_screens/seller_order_screen.dart';
 import 'package:multi_vendor/views/dashboard_screens/seller_store_screen.dart';
 import 'package:multi_vendor/views/dashboard_screens/statistics_screen.dart';
+import 'package:multi_vendor/views/minor_screens/visit_store_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -16,7 +17,8 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   List<Widget> pages = [
-    SellerStoreScreen(),
+    // SellerStoreScreen(),
+    VisitStoreScreen(sellerUid: FirebaseAuth.instance.currentUser!.uid),
     SellerOrderScreen(),
     EditProfileScreen(),
     ManageProductsScreen(),
