@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_vendor/views/inner_screens/customer_order_screen.dart';
 import 'package:multi_vendor/views/wishlist_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -123,7 +124,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Container(
                               color: Colors.cyan,
                               child: TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return CustomerOrderScreen();
+                                  }));
+                                },
                                 child: SizedBox(
                                   height: 40,
                                   width:
