@@ -2,11 +2,31 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_vendor/provider/cart_provider.dart';
+import 'package:multi_vendor/views/customer_home_screen.dart';
 import 'package:multi_vendor/views/minor_screens/payment_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:sn_progress_dialog/progress_dialog.dart';
+import 'package:uuid/uuid.dart';
 
-class PaymentScreen extends StatelessWidget {
+class PaymentScreen extends StatefulWidget {
   const PaymentScreen({super.key});
+
+  @override
+  State<PaymentScreen> createState() => _PaymentScreenState();
+}
+
+class _PaymentScreenState extends State<PaymentScreen> {
+  int selectedItem = 0;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  late String orderId;
+  void showProgress() {
+    ProgressDialog progressDialog = ProgressDialog(context: context);
+    progressDialog.show(
+      max: 100,
+      msg: 'Placing Order ...',
+      barrierColor: Colors.cyan,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +60,13 @@ class PaymentScreen extends StatelessWidget {
                   ),
                   backgroundColor: Colors.grey.shade200,
                   elevation: 0,
+                  title: Text(
+                    'Payment',
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                  centerTitle: true,
                 ),
                 body: Padding(
                   padding: const EdgeInsets.all(10.0),
@@ -144,6 +171,51 @@ class PaymentScreen extends StatelessWidget {
                               10,
                             ),
                           ),
+                          child: Column(
+                            children: [
+                              RadioListTile(
+                                value: 1,
+                                groupValue: selectedItem,
+                                onChanged: (int? value) {
+                                  setState(() {
+                                    selectedItem = value!;
+                                  });
+                                },
+                                title: Text('Cash on Delivery'),
+                                subtitle: Text('Pay when delivered'),
+                              ),
+                              RadioListTile(
+                                value: 2,
+                                groupValue: selectedItem,
+                                onChanged: (int? value) {
+                                  setState(() {
+                                    selectedItem = value!;
+                                  });
+                                },
+                                title: Text('Pay with Card'),
+                              ),
+                              RadioListTile(
+                                value: 3,
+                                groupValue: selectedItem,
+                                onChanged: (int? value) {
+                                  setState(() {
+                                    selectedItem = value!;
+                                  });
+                                },
+                                title: Text('Payment with Stripe'),
+                              ),
+                              RadioListTile(
+                                value: 4,
+                                groupValue: selectedItem,
+                                onChanged: (int? value) {
+                                  setState(() {
+                                    selectedItem = value!;
+                                  });
+                                },
+                                title: Text('Pay with MPESA'),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -165,10 +237,108 @@ class PaymentScreen extends StatelessWidget {
                         ),
                         child: MaterialButton(
                           onPressed: () {
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(builder: (context) {
-                              return PaymentScreen();
-                            }));
+                            if (selectedItem == 1) {
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) {
+                                    return SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.30,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text(
+                                            'Payment from anywhere',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 35,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.90,
+                                            decoration: BoxDecoration(
+                                              color: Colors.cyan,
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                10,
+                                              ),
+                                            ),
+                                            child: MaterialButton(
+                                              onPressed: () async {
+                                                showProgress();
+                                                for (var item in context
+                                                    .read<CartProvider>()
+                                                    .getItems) {
+                                                  CollectionReference orderRef =
+                                                      _firestore
+                                                          .collection('orders');
+
+                                                  orderId = Uuid().v4();
+                                                  await orderRef
+                                                      .doc(orderId)
+                                                      .set({
+                                                    'cid': data['cid'],
+                                                    'customerName':
+                                                        data['fullName'],
+                                                    'email': data['email'],
+                                                    'address': data['address'],
+                                                    'phone': data['phone'],
+                                                    'profileImage':
+                                                        data['image'],
+                                                    'sellerUid': item.sellerUid,
+                                                    'productId':
+                                                        item.documentId,
+                                                    'orderId': orderId,
+                                                    'orderImage':
+                                                        item.imagesUrl.first,
+                                                    'orderQuantity':
+                                                        item.quantity,
+                                                    'orderPrice':
+                                                        item.quantity *
+                                                            item.price,
+                                                    'deliveryStatus':
+                                                        'preparing',
+                                                    'deliveryDate': '',
+                                                    'orderDate': DateTime.now(),
+                                                    'paymentStatus':
+                                                        'Cash on Delivery',
+                                                    'orderReview': false,
+                                                  }).whenComplete(() {
+                                                    context
+                                                        .read<CartProvider>()
+                                                        .clearCart();
+                                                    Navigator.of(context)
+                                                        .pushNamedAndRemoveUntil(
+                                                            CustomerHomeScreen
+                                                                .routeName,
+                                                            (route) => false);
+                                                  });
+                                                }
+                                              },
+                                              child: Center(
+                                                child: Text(
+                                                  'Pay ${totalPaid.toStringAsFixed(2)}',
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  });
+                            }
+                            // Navigator.of(context)
+                            //     .push(MaterialPageRoute(builder: (context) {
+                            //   return PaymentScreen();
+                            // }));
                           },
                           child: Center(
                             child: Text(
