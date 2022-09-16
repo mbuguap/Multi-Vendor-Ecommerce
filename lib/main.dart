@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:multi_vendor/provider/cart_provider.dart';
+import 'package:multi_vendor/provider/wishlist_provider.dart';
 import 'package:multi_vendor/views/auth/customer_login_screen.dart';
 import 'package:multi_vendor/views/auth/landing_customer_screen.dart';
 import 'package:multi_vendor/views/auth/landing_seller_screen.dart';
@@ -17,7 +18,10 @@ void main() async {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) {
       return CartProvider();
-    })
+    }),
+    ChangeNotifierProvider(create: (_) {
+      return WishListProvider();
+    }),
   ], child: const MyApp()));
 }
 

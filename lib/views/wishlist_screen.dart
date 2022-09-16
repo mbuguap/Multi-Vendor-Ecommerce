@@ -1,41 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:multi_vendor/provider/cart_provider.dart';
+import 'package:multi_vendor/provider/wishlist_provider.dart';
 import 'package:provider/provider.dart';
 
-class CartScreen extends StatelessWidget {
-  const CartScreen({super.key});
-
+class WishListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         iconTheme: IconThemeData(
           color: Colors.black,
         ),
+        backgroundColor: Colors.white,
         elevation: 0,
         title: Text(
-          'Cart',
+          'WishList',
           style: TextStyle(
             fontSize: 22,
             color: Colors.black,
+            fontWeight: FontWeight.bold,
           ),
         ),
         centerTitle: true,
         actions: [
           IconButton(
               onPressed: () {
-                context.read<CartProvider>().clearCart();
+                context.read<WishListProvider>().clearWish();
               },
               icon: Icon(Icons.delete_forever, color: Colors.black))
         ],
       ),
-      body: context.watch<CartProvider>().getItems.isNotEmpty
-          ? Consumer<CartProvider>(
-              builder: (context, cartProvider, child) {
+      body: context.watch<WishListProvider>().getWishItems.isNotEmpty
+          ? Consumer<WishListProvider>(
+              builder: (context, wishProvider, child) {
                 return ListView.builder(
-                    itemCount: cartProvider.count,
+                    itemCount: wishProvider.count,
                     itemBuilder: (context, index) {
                       return Card(
                         child: SizedBox(
@@ -45,8 +44,8 @@ class CartScreen extends StatelessWidget {
                               SizedBox(
                                 height: 100,
                                 width: 120,
-                                child: Image.network(cartProvider
-                                    .getItems[index].imagesUrl[0]
+                                child: Image.network(wishProvider
+                                    .getWishItems[index].imagesUrl[0]
                                     .toString()),
                               ),
                               Flexible(
@@ -56,7 +55,7 @@ class CartScreen extends StatelessWidget {
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Text(
-                                      cartProvider.getItems[index].name,
+                                      wishProvider.getWishItems[index].name,
                                       maxLines: 2,
                                       style: TextStyle(
                                         fontSize: 16,
@@ -69,7 +68,7 @@ class CartScreen extends StatelessWidget {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          cartProvider.getItems[index].price
+                                          wishProvider.getWishItems[index].price
                                               .toStringAsFixed(2),
                                           style: TextStyle(
                                             fontSize: 16,
@@ -87,41 +86,24 @@ class CartScreen extends StatelessWidget {
                                           child: Row(
                                             children: [
                                               IconButton(
-                                                onPressed: cartProvider
-                                                            .getItems[index]
-                                                            .quantity ==
-                                                        1
-                                                    ? null
-                                                    : () {
-                                                        cartProvider.decrement(
-                                                            cartProvider
-                                                                    .getItems[
-                                                                index]);
-                                                      },
-                                                icon: Icon(
-                                                  FontAwesomeIcons.minus,
-                                                ),
-                                              ),
-                                              Text(cartProvider
-                                                  .getItems[index].quantity
-                                                  .toString()),
-                                              IconButton(
-                                                onPressed: cartProvider
-                                                            .getItems[index]
-                                                            .quantity ==
-                                                        cartProvider
-                                                            .getItems[index]
-                                                            .instock
-                                                    ? null
-                                                    : () {
-                                                        cartProvider.increment(
-                                                            cartProvider
-                                                                    .getItems[
-                                                                index]);
-                                                      },
-                                                icon: Icon(
-                                                  FontAwesomeIcons.plus,
-                                                ),
+                                                onPressed: () {
+                                                  Provider.of<WishListProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .removeWishItem(
+                                                          wishProvider
+                                                                  .getWishItems[
+                                                              index]);
+                                                  // context
+                                                  //     .read<WishListProvider>()
+                                                  //     .removeWishItem(
+                                                  //         wishProvider
+                                                  //                 .getWishItems[
+                                                  //             index]);
+                                                },
+                                                icon: Icon(FontAwesomeIcons
+                                                    .trashArrowUp),
+                                                color: Colors.cyan,
                                               ),
                                             ],
                                           ),
@@ -143,7 +125,7 @@ class CartScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Your Cart is Empty',
+                    'Wishlist is empty',
                     style: TextStyle(
                       fontSize: 30,
                       color: Colors.blueGrey,
@@ -190,54 +172,6 @@ class CartScreen extends StatelessWidget {
                 ],
               ),
             ),
-      bottomSheet: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Total: \$",
-              style: TextStyle(
-                // color: Colors.white,
-                fontSize: 17,
-              ),
-            ),
-            Text(
-              Provider.of<CartProvider>(context, listen: true)
-                  .totalPrice
-                  .toStringAsFixed(2),
-              // context.read<CartProvider>().totalPrice.toStringAsFixed(2),
-              // context.watch<CartProvider>().totalPrice.toStringAsFixed(2),
-
-              style: TextStyle(
-                color: Colors.red,
-                fontSize: 17,
-                letterSpacing: 3,
-              ),
-            ),
-            Container(
-              height: 35,
-              width: MediaQuery.of(context).size.width * 0.45,
-              decoration: BoxDecoration(
-                color: Colors.cyan,
-                borderRadius: BorderRadius.circular(
-                  25,
-                ),
-              ),
-              child: MaterialButton(
-                onPressed: () {},
-                child: Text(
-                  "CHECK OUT",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 17,
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
     );
   }
 }
