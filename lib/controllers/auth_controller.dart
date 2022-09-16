@@ -48,7 +48,8 @@ class AuthController {
           "fullName": fullName,
           "email": email,
           "image": downloadUrl,
-          "address": ''
+          "address": '',
+          "phone": '',
         });
 
         res = 'success';

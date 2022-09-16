@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:multi_vendor/provider/cart_provider.dart';
+import 'package:multi_vendor/views/minor_screens/place_order_screen.dart';
 import 'package:provider/provider.dart';
 
 class CartScreen extends StatelessWidget {
@@ -225,7 +226,14 @@ class CartScreen extends StatelessWidget {
                 ),
               ),
               child: MaterialButton(
-                onPressed: () {},
+                onPressed: context.watch<CartProvider>().totalPrice == 0.00
+                    ? null
+                    : () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return PlaceOrderScreen();
+                        }));
+                      },
                 child: Text(
                   "CHECK OUT",
                   style: TextStyle(
