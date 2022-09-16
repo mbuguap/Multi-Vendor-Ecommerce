@@ -15,4 +15,12 @@ class Product {
       required this.imagesUrl,
       required this.documentId,
       required this.sellerUid});
+
+  void increase() {
+    quantity++;
+  }
+
+  void decrease() {
+    quantity--;
+  }
 }

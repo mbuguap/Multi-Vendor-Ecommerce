@@ -1,11 +1,17 @@
+import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
+import 'package:multi_vendor/controllers/snack_bar_controller.dart';
+import 'package:multi_vendor/provider/cart_provider.dart';
+import 'package:multi_vendor/views/cart_screen.dart';
 import 'package:multi_vendor/views/minor_screens/visit_store_screen.dart';
 import 'package:multi_vendor/views/widgets/full_image_screen.dart';
 import 'package:multi_vendor/views/widgets/product_model.dart';
+import 'package:provider/provider.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
+import 'package:collection/collection.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   final dynamic productList;
@@ -231,8 +237,26 @@ class ProductDetailScreen extends StatelessWidget {
               icon: Icon(Icons.store),
             ),
             IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.shopping_cart),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return CartScreen();
+                }));
+              },
+              icon: Badge(
+                showBadge: Provider.of<CartProvider>(context).getItems.isEmpty
+                    ? false
+                    : true,
+                badgeColor: Colors.cyan,
+                badgeContent: Text(
+                  Provider.of<CartProvider>(context).getItems.length.toString(),
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                child: Icon(Icons.shopping_cart),
+              ),
             ),
             Container(
               height: 35,
@@ -244,7 +268,24 @@ class ProductDetailScreen extends StatelessWidget {
                 ),
               ),
               child: MaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  Provider.of<CartProvider>(context, listen: false)
+                              .getItems
+                              .firstWhereOrNull((cart) =>
+                                  cart.documentId ==
+                                  productList['productId']) !=
+                          null
+                      ? snackBar('Item Already in Cart', context)
+                      : Provider.of<CartProvider>(context, listen: false)
+                          .addItem(
+                              productList['productName'],
+                              productList['price'],
+                              1,
+                              productList['productImage'],
+                              productList['instock'],
+                              productList['productId'],
+                              productList['sellerUid']);
+                },
                 child: Text(
                   "ADD TO CART",
                   style: TextStyle(
