@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:multi_vendor/views/dashboard_screens/balance_screen.dart';
+import 'package:multi_vendor/views/dashboard_screens/edit_profile_screen.dart';
+import 'package:multi_vendor/views/dashboard_screens/manage_products_screen.dart';
+import 'package:multi_vendor/views/dashboard_screens/seller_order_screen.dart';
+import 'package:multi_vendor/views/dashboard_screens/seller_store_screen.dart';
+import 'package:multi_vendor/views/dashboard_screens/statistics_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -6,6 +12,15 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  List<Widget> pages = [
+    SellerStoreScreen(),
+    SellerOrderScreen(),
+    EditProfileScreen(),
+    ManageProductsScreen(),
+    BalanceScreen(),
+    StatisticsScreen(),
+  ];
+
   List<String> title = [
     'My Store',
     'Orders',
@@ -51,26 +66,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
           mainAxisSpacing: 10,
           crossAxisSpacing: 10,
           children: List.generate(6, (index) {
-            return Card(
-              elevation: 15,
-              color: Colors.blueGrey.withOpacity(0.8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Icon(
-                    icon[index],
-                    size: 40,
-                    color: Colors.cyan,
-                  ),
-                  Text(
-                    title[index],
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+            return InkWell(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => pages[index]));
+              },
+              child: Card(
+                elevation: 15,
+                color: Colors.blueGrey.withOpacity(0.8),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Icon(
+                      icon[index],
+                      size: 40,
+                      color: Colors.cyan,
                     ),
-                  ),
-                ],
+                    Text(
+                      title[index],
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           }),
