@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_vendor/views/auth/seller_login_screen.dart';
 import 'package:multi_vendor/views/dashboard_screens/balance_screen.dart';
 import 'package:multi_vendor/views/dashboard_screens/edit_profile_screen.dart';
 import 'package:multi_vendor/views/dashboard_screens/manage_products_screen.dart';
@@ -52,7 +55,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
         centerTitle: true,
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return SellerLoginScreen();
+                }));
+              },
               icon: Icon(
                 Icons.logout,
                 color: Colors.cyan,
